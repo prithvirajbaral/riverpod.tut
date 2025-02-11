@@ -1,45 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// to read value
-final hello = Provider<String>(
-  (ref) {
-    return "hello prithvi";
-  },
-);
+// Define a counter provider
+final counter = StateProvider<int>((ref) => 0);
 
-final age = Provider<int>(
-  (ref) {
-    return 23;
-  },
-);
-
-// for stateful widget
-
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final a = ref.read(hello);
-    final b = ref.read(age);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counter);
+    print("build");
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
       body: Center(
-        child: Text(
-          "$a $b",
-          style: const TextStyle(fontSize: 50),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              count.toString(),
+              style: const TextStyle(fontSize: 50),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(counter.notifier).state++;
+              },
+              child: const Text("+"),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-
-
-
