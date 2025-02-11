@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // Define a counter provider
 final counter = StateProvider<int>((ref) => 0);
 
+final switchProvider = StateProvider<bool>((ref) => false);
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -25,6 +27,19 @@ class HomeScreen extends ConsumerWidget {
                 return Text(
                   count.toString(),
                   style: const TextStyle(fontSize: 50),
+                );
+              },
+            ),
+            
+            Consumer(
+              builder: (context, ref, child) {
+                final b = ref.watch(switchProvider);
+                print("build3");
+                return Switch(
+                  value: b,
+                  onChanged: (value) {
+                    ref.read(switchProvider.notifier).state = value;
+                  },
                 );
               },
             ),
