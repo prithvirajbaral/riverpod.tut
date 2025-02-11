@@ -27,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
                 return Container(
                   height: 200,
                   width: 200,
-                  color: Colors.red.withOpacity(slider),
+                  color: Colors.red.withOpacity(slider.slider),
                 );
               },
             ),
@@ -35,9 +35,10 @@ class HomeScreen extends ConsumerWidget {
               builder: (context, ref, child) {
                 final slider = ref.watch(sliderProvider);
                 return Slider(
-                  value: slider,
+                  value: slider.slider,
                   onChanged: (value) {
-                    ref.read(sliderProvider.notifier).state = value;
+                    final stateProvider = ref.read(sliderProvider.notifier);
+                    stateProvider.state = stateProvider.state.copyWith(slider: value);
                   },
                 );
               },
