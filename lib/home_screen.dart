@@ -24,6 +24,27 @@ class HomeScreen extends ConsumerWidget {
             Consumer(
               builder: (context, ref, child) {
                 final slider = ref.watch(sliderProvider);
+                print('build eye');
+                return InkWell(
+                  onTap: () {
+                    final stateProvider = ref.read(sliderProvider.notifier);
+                    stateProvider.state = stateProvider.state
+                        .copyWith(showPassword: !slider.showPassword);
+                  },
+                  child: SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: slider.showPassword
+                        ? const Icon(Icons.remove_red_eye)
+                        : const Icon(Icons.image),
+                  ),
+                );
+              },
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                final slider = ref.watch(sliderProvider);
+                print('box');
                 return Container(
                   height: 200,
                   width: 200,
@@ -38,7 +59,8 @@ class HomeScreen extends ConsumerWidget {
                   value: slider.slider,
                   onChanged: (value) {
                     final stateProvider = ref.read(sliderProvider.notifier);
-                    stateProvider.state = stateProvider.state.copyWith(slider: value);
+                    stateProvider.state =
+                        stateProvider.state.copyWith(slider: value);
                   },
                 );
               },
