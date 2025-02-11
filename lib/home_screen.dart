@@ -14,16 +14,18 @@ final age = Provider<int>(
   },
 );
 
-// for Stateless widget
+// for stateful widget
 
-// class HomeScreen extends StatelessWidget {
-
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  // Widget build(BuildContext context) {
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
     final a = ref.read(hello);
     final b = ref.read(age);
     return Scaffold(
