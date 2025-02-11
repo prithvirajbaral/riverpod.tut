@@ -1,72 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_tut/slider_provider.dart';
 
 // Define a counter provider
 final counter = StateProvider<int>((ref) => 0);
 
 final switchProvider = StateProvider<bool>((ref) => false);
 
-
-
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('print');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Counter App'),
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Consumer(
               builder: (context, ref, child) {
-                final count = ref.watch(counter);
-                print("build2");
-                return Text(
-                  count.toString(),
-                  style: const TextStyle(fontSize: 50),
+                final slider = ref.watch(sliderProvider);
+                return Container(
+                  height: 200,
+                  width: 200,
+                  color: Colors.red.withOpacity(slider),
                 );
               },
             ),
-
             Consumer(
               builder: (context, ref, child) {
-                final b = ref.watch(switchProvider);
-                print("build3");
-                return Switch(
-                  value: b,
+                final slider = ref.watch(sliderProvider);
+                return Slider(
+                  value: slider,
                   onChanged: (value) {
-                    ref.read(switchProvider.notifier).state = value;
+                    ref.read(sliderProvider.notifier).state = value;
                   },
                 );
               },
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(counter.notifier).state++;
-                  },
-                  child: const Text("+"),
-                ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(counter.notifier).state--;
-                  },
-                  child: const Text("-"),
-                ),
-              ],
             ),
           ],
         ),
