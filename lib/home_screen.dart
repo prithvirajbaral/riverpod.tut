@@ -9,8 +9,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(counter);
-    print("build");
+    print("build1");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Counter App'),
@@ -19,9 +18,15 @@ class HomeScreen extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              count.toString(),
-              style: const TextStyle(fontSize: 50),
+            Consumer(
+              builder: (context, ref, child) {
+                final count = ref.watch(counter);
+                print("build2");
+                return Text(
+                  count.toString(),
+                  style: const TextStyle(fontSize: 50),
+                );
+              },
             ),
             const SizedBox(height: 16),
             ElevatedButton(
