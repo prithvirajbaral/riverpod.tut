@@ -1,73 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_tut/slider_provider.dart';
-
-// Define a counter provider
-final counter = StateProvider<int>((ref) => 0);
-
-final switchProvider = StateProvider<bool>((ref) => false);
+import 'package:riverpod_tut/search_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('print');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Counter App'),
+        title: const Text('Text App'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Consumer(
-              builder: (context, ref, child) {
-                final slider = ref.watch(
-                    sliderProvider.select((state) => state.showPassword));
-                print('build eye');
-                return InkWell(
-                  onTap: () {
-                    final stateProvider = ref.read(sliderProvider.notifier);
-                    stateProvider.state =
-                        stateProvider.state.copyWith(showPassword: !slider);
-                  },
-                  child: SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: slider
-                        ? const Icon(Icons.remove_red_eye)
-                        : const Icon(Icons.image),
-                  ),
-                );
+            TextField(
+              onChanged: (value) {
+                ref.read(searchProvider.notifier).search(value);
               },
+            ),
+            const SizedBox(
+              height: 16,
             ),
             Consumer(
               builder: (context, ref, child) {
-                final slider =
-                    ref.watch(sliderProvider.select((state) => state.slider));
-                print('box');
-                return Container(
-                  height: 200,
-                  width: 200,
-                  color: Colors.red.withOpacity(slider),
+                final search = ref.watch(searchProvider);
+                return Text(
+                  search,
+                  style: const TextStyle(fontSize: 50),
                 );
               },
-            ),
-            Consumer(
-              builder: (context, ref, child) {
-                final slider =
-                    ref.watch(sliderProvider.select((state) => state.slider));
-                return Slider(
-                  value: slider,
-                  onChanged: (value) {
-                    final stateProvider = ref.read(sliderProvider.notifier);
-                    stateProvider.state =
-                        stateProvider.state.copyWith(slider: value);
-                  },
-                );
-              },
-            ),
+            )
           ],
         ),
       ),
