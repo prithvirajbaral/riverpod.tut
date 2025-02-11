@@ -23,18 +23,19 @@ class HomeScreen extends ConsumerWidget {
           children: [
             Consumer(
               builder: (context, ref, child) {
-                final slider = ref.watch(sliderProvider);
+                final slider = ref.watch(
+                    sliderProvider.select((state) => state.showPassword));
                 print('build eye');
                 return InkWell(
                   onTap: () {
                     final stateProvider = ref.read(sliderProvider.notifier);
-                    stateProvider.state = stateProvider.state
-                        .copyWith(showPassword: !slider.showPassword);
+                    stateProvider.state =
+                        stateProvider.state.copyWith(showPassword: !slider);
                   },
                   child: SizedBox(
                     height: 200,
                     width: 200,
-                    child: slider.showPassword
+                    child: slider
                         ? const Icon(Icons.remove_red_eye)
                         : const Icon(Icons.image),
                   ),
@@ -43,20 +44,22 @@ class HomeScreen extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final slider = ref.watch(sliderProvider);
+                final slider =
+                    ref.watch(sliderProvider.select((state) => state.slider));
                 print('box');
                 return Container(
                   height: 200,
                   width: 200,
-                  color: Colors.red.withOpacity(slider.slider),
+                  color: Colors.red.withOpacity(slider),
                 );
               },
             ),
             Consumer(
               builder: (context, ref, child) {
-                final slider = ref.watch(sliderProvider);
+                final slider =
+                    ref.watch(sliderProvider.select((state) => state.slider));
                 return Slider(
-                  value: slider.slider,
+                  value: slider,
                   onChanged: (value) {
                     final stateProvider = ref.read(sliderProvider.notifier);
                     stateProvider.state =
