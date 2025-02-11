@@ -6,12 +6,18 @@ final counter = StateProvider<int>((ref) => 0);
 
 final switchProvider = StateProvider<bool>((ref) => false);
 
-class HomeScreen extends ConsumerWidget {
+
+
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    print("build1");
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Counter App'),
@@ -30,7 +36,7 @@ class HomeScreen extends ConsumerWidget {
                 );
               },
             ),
-            
+
             Consumer(
               builder: (context, ref, child) {
                 final b = ref.watch(switchProvider);
